@@ -4,7 +4,7 @@
 
 ### 0NF
 
-**Customer:** (<b class="pk">CustomerNumber</b>, FirstName, LastName, Address, City, Provice, PostalCode, HomePhone)
+**Customer:** <span class="md"><b class="pk">CustomerNumber</b>, FirstName, LastName, Address, City, Provice, PostalCode, HomePhone</span>
 
 ### 1NF - 3NF
 
@@ -18,13 +18,29 @@
 
 ### 0NF
 
-**Order:** (<b class="pk">OrderNumber</b>, CustomerNumber, FirstName, LastName, Address, City, Province, PostalCode, Phone, Date, <b class="rg">ItemNumber, Description, Quantity, CurrentPrice, SellingPrice, Amount</b>, Subtotal, GST, Total)
+**Order:** <span class="md"><b class="pk">OrderNumber</b>, CustomerNumber, FirstName, LastName, Address, City, Province, PostalCode, Phone, Date, <b class="rg">ItemNumber, Description, Quantity, CurrentPrice, SellingPrice, Amount</b>, Subtotal, GST, Total</span>
 
 ### 1NF 
 
-**Order:** (<b class="pk">OrderNumber</b>, CustomerNumber, FirstName, LastName, Address, City, Province, PostalCode, Phone, Date, Subtotal, GST, Total)
+**Order:** <span class="md"><b class="pk">OrderNumber</b>, CustomerNumber, FirstName, LastName, Address, City, Province, PostalCode, Phone, Date, Subtotal, GST, Total</span>
 
-**OrderDetail:** (<b class="fk">OrderNumber</b><b class="pk">ItemNumber</b>)
+**OrderDetail:** <span class="md"><b class="pk">ItemNumber, <b class="fk">OrderNumber</b></b>, Description, Quantity, CurrentPrice, SellingPrice, Amount</span>
+
+### 2NF
+
+**OrderDetail:** <span class="md"><b class="pk">ItemNumber, <b class="fk">OrderNumber</b></b>, Quanity, SellingPrice, Amount</span>
+
+**Item:**<span class="md"><b class="pk">ItemNumber</b>, Description, CurrentPrice</span>
+
+### 3NF
+
+***Order:**<span class="md"><b class="pk">OrderNumber</b><b class="fk">CostumerNumber</b>, Date, Subtotal, GST, Total</span>
+
+**OrderDetail:** <span class="md"><b class="pk"><b class="fk">OrderNumber, ItemNumber</b></b>, Quantity, SellingPrice, Amount</span>
+
+**Item:** <span class="md"><b class="pk">ItemNumber</b>, Description, CurrentPrice</span>
+
+**Customer:**<span class="md"><b class="pk">CostumerNumber</b>, FirstName, LastName, Address, City, Provincem PostalCode, Phone</span>
 
 
 
