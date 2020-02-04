@@ -22,7 +22,7 @@ CREATE TABLE Students
     StudentID       int
         CONSTRAINT PK_Students_StudentID
             PRIMARY KEY
-        IDENTITY(20200001, 1)           NOT NULL, 
+        IDENTITY(20200001, 1)           NOT NULL, -- only applies to a primary key, tells the database to insert a value for you
     GivenName       varchar(50)         NOT NULL,
     Surname         varchar(50)         NOT NULL,
     DateOfBirth     datetime            NOT NULL,
