@@ -91,6 +91,35 @@ CREATE TABLE StudentCourses
 		CHECK (([Status] = 'C' AND FinalMark IS NOT NULL)
 			  OR
 			  ([Status] IN ('E', 'W') AND FinalMark IS NULL))
+
 )
 
--- table definition is a set of column declarations
+
+/* ------ Indexes ------ */
+
+CREATE NONCLUSTERED INDEX IX_StudentCourses_StudentID
+	ON StudentCourses (StudentID)
+
+CREATE NONCLUSTERED INDEX IX_StudentCourses_CourseNumber
+	ON StudentCourses (CourseNumber)
+
+-- For other columns where searching/sorting might be important
+
+CREATE NONCLUSTERED INDEX IX_Students_Surname
+	ON Students (Surname)
+
+/* ------ ALTER TABLE statements ------- */
+-- 1) Add a PostalCode for the Students Table
+ALTER TABLE Students
+	ADD PostalCode char(6) NULL
+	-- Adding this as a nullable column because students already exists for which we do not have postal codes for
+GO  -- I have to create the above code as a seperate batch from the following
+
+-- 2) Make sure the PostalCode follows the correct pattern A#A#A#
+
+ALTER TABLE Students
+	ADD CONSTRAINT CK_Students_PostalCode
+		CHECK (PostalCode LIKE '[A-Z][0-9][A-Z][0-9][A-Z][0-9]')
+		-- match for A1A1A1  :	  A    1    A    1    A    1
+
+
