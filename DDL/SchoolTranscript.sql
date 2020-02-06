@@ -76,10 +76,21 @@ CREATE TABLE StudentCourses
     [Year]          tinyint             NOT NULL,
     Term            char(3)             NOT NULL,
     FinalMark       tinyint                 NULL,
-    [Status]        char(1)             NOT NULL,
+    [Status]        char(1)
+		CONSTRAINT CK_StudentCourses_Status
+		     CHECK ([Status] = 'E' OR
+					[Status] = 'C' OR
+					[Status] = 'W')
+--			 CHECK ([Status] IN ('E', 'C', 'W'))
+								        NOT NULL,
     -- Table-level constraint for composite keys
     CONSTRAINT PK_StudentCourses_StudentID_CourseNumber
-        PRIMARY KEY (StudentID, CourseNumber)
+        PRIMARY KEY (StudentID, CourseNumber),
+    -- Table-level constraint involving more than one column
+	CONSTRAINT CK_StudentCourses_FinalMark_Status
+		CHECK (([Status] = 'C' AND FinalMark IS NOT NULL)
+			  OR
+			  ([Status] IN ('E', 'W') AND FinalMark IS NULL))
 )
 
 -- table definition is a set of column declarations
