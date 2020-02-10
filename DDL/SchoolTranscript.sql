@@ -15,6 +15,8 @@ IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Courses')
     DROP TABLE Courses
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Students')
     DROP TABLE Students
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Invoice')
+    DROP TABLE Invoice
 
 /* === Create Tables === */
 CREATE TABLE Students
@@ -121,5 +123,28 @@ ALTER TABLE Students
 	ADD CONSTRAINT CK_Students_PostalCode
 		CHECK (PostalCode LIKE '[A-Z][0-9][A-Z][0-9][A-Z][0-9]')
 		-- match for A1A1A1  :	  A    1    A    1    A    1
+GO
+
+-- 3) Add a default constraint for the Status olumn of StudentCourses
+--    Set 'E' as the default value
+ALTER TABLE StudentCourses
+	ADD CONSTRAINT DF_StudentCourses_Status
+		DEFAULT ('E') FOR [Status] -- In an ALTER TABLE statement, the column must be specified for the default value
+
+GO
+
+
+/* ----- Other Odds and Ends ----- */
+sp_help Students -- Get schema information for the Students table
+
+-- In a table, we can have some columns be "Calculated" or "Derived" columns
+-- Where the value of the columm is a calculation fron other columns
+CREATE TABLE Invoice
+(
+	InvoiceID		int		NOT NULL,
+	Subtotal		money	NOT NULL,
+	GST				money	NOT NULL,
+	Total			AS Subtotal + GST -- This is a completed Column
+)
 
 
