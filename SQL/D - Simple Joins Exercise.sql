@@ -2,6 +2,11 @@
 USE [A01-School]
 GO
 
+/* We Express relationships between tables in our design through FOREIGN KEY constraints. But those Constraints
+   simply check/restrict information that is stored in the Foreign Key column. It doesn't actually physically "connect"
+   the tables - all the tables are "independent". That means that when we try to pull the information from the multiple related tables, 
+   we have to state the connection between those tables. That is, we have to state how the tables JOIN together. */
+
 --1.	Select Student full names and the course ID's they are registered in.
 SELECT  FirstName + ' ' + LastName AS 'Full Name',
         CourseId
@@ -22,7 +27,7 @@ FROM    Student AS S
 
 --2.	Select the Staff full names and the Course ID's they teach.
 --      Order the results by the staff name then by the course Id
-SELECT  DISTINCT -- The DISTINCT keyword will remove duplate rows from the results
+SELECT  DISTINCT -- The DISTINCT keyword will remove duplicate rows from the results
         FirstName + ' ' + LastName AS 'Staff Full Name',
         CourseId
 FROM    Staff S
@@ -33,7 +38,7 @@ ORDER BY 'Staff Full Name', CourseId
 --3.	Select all the Club ID's and the Student full names that are in them
 -- TODO: Student Answer Here...
 SELECT  ClubId, FirstName + ' ' + LastName AS 'Student Full Name'
-FROM    Activity A
+FROM    Activity AS A
     INNER JOIN Student S ON A.StudentID = S.StudentID
 
 --4.	Select the Student full name, courseID's and marks for studentID 199899200.
@@ -85,6 +90,16 @@ WHERE   S.StudentID = 199912010
 --9. What are the Student Names, courseID's with individual Marks at 80% or higher? Sort the results by course.
 -- TODO: Student Answer Here...
 
+SELECT FirstName + ' ' + LastName AS 'Student', CourseID, Mark
+FROM Student
+    INNER JOIN Registration ON Student.StudentID = Registration.StudentID
+WHERE Mark >= 80
+
 --10. Modify the script from the previous question to show the Course Name along with the ID.
 -- TODO: Student Answer Here...
 
+SELECT FirstName + ' ' + LastName AS 'Student', Registration.CourseID, CourseName AS 'Course Name', Mark
+FROM Student
+    INNER JOIN Registration ON Student.StudentID = Registration.StudentID
+    INNER JOIN Course ON Course.CourseID = Registration.CourseID
+WHERE Mark >= 80
