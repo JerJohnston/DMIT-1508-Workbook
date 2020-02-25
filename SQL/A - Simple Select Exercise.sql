@@ -17,7 +17,7 @@ SELECT  'Dan' + ' ' + 'Gilleland' AS 'Instructor',
 
 -- 1.   Select all the information from the Club table
 -- The SELECT statement produces a table of results which will consist of one or more rows of data.
-SELECT  ClubId, ClubName
+SELECT  ClubId, ClubName 
 FROM    Club
 
 -- The * can be used to indicate all of the columns. But DO NOT DO THIS, or your instructor
