@@ -16,13 +16,13 @@ GO
     ORDER BY 1 -- sorted by the first column
 
 	-- SUBSTRING
-	SELECT SUBSTRING('Hello World', 1, 2)
+	SELECT SUBSTRING('Hello World', 1, 2) -- 1 = IndexPosition 2 = Number of characters to desplay
 	SELECT SUBSTRING('To be or not to be', 10, 3)
 	-- REVERSE
     SELECT REVERSE('Dan')
     -- (Club whose id is a palindrome)
     -- Select the insert statement below to add a row into the Club table
-    -- INSERT INTO Club(ClubId, ClubName) VALUES ('ABCBA', 'Active Bat Catching Brotherhood Assoc.')
+    --INSERT INTO Club(ClubId, ClubName) VALUES ('ABCBA', 'Active Bat Catching Brotherhood Assoc.')
 	SELECT	ClubId, ClubName
 	FROM	Club
 	WHERE   ClubId = REVERSE(ClubId)
@@ -91,16 +91,26 @@ WHERE   Mark IS NOT NULL
   AND   LEFT(Semester, 4) = 2004
 
 -- 6. select last three characters of all the courses
+--SELECT CourseName
+--FROM Course
 
+SELECT RIGHT (CourseName, 3) AS 'Courses' 
+FROM Course 
+ORDER BY 1
 
 -- 7. Select the characters in the position description from characters 8 to 13 for PositionID 5
-
+SELECT SUBSTRING (PositionDescription, 8, 5)
+FROM Position 
+WHERE PositionID = 5
 
 -- 8. Select all the Student First Names as upper case.
-
+SELECT UPPER (FirstName) 
+FROM Student 
 
 -- 9. Select the First Names of students whose first names are 3 characters long.
-
+SELECT FirstName
+FROM Student
+WHERE LEN(FirstName) = 3
 
 /* ************************************************
     String Functions
