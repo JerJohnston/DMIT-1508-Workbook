@@ -1,6 +1,8 @@
 --Union Exercise (using the IQSchool database)
-USE [A01-School]
-GO
+
+-- A UNION allows us to combine the result set of two or more individual SELECT statements. For the UNION to work, however, the number, order and data type
+-- of the colymns in the SELECT statements must match.
+-- UNIONS are rarely used, but are helpful for certain situtations. 
 
 --1.	Write a script that will produce the 'It Happened in October' display.
 --The output of the display is shown below
@@ -59,7 +61,6 @@ AS
     FROM    Staff S
         INNER JOIN Position P ON S.PositionID = P.PositionID
 GO
-
 
 --2.  Create a list of course IDs and the number of students in the course and
 --    UNION that with a list of the course IDs and the MaxStudents of the course.
