@@ -15,6 +15,12 @@ GO -- Execute the code up to this point as a single batch
     INSERT INTO TableName(Comma, Separated, ListOf, ColumnNames)
     VALUES ('A', 'Value', 'Per', 'Column'),
            ('Another', 'Row', 'Of', 'Values')
+
+    When inserting values, you can use subqueries for individual values provided
+    that the subquery returns a single value:
+
+    INSTER INTO TableName(Comma, Seperated, ListOf, ColumnNames)
+    VALUES ('A', (SELECT SingleValue FROM SomeTable), 'Per', 'Column')
     
     Another syntax for the INSERT statement is to use a SELECT clause in place
     of the VALUES clause. This is used for zero-to-many possible rows to insert.
@@ -48,7 +54,14 @@ FROM    Position
 WHERE   PositionID NOT IN (SELECT PositionID FROM Staff)
 --      Add Sheldon Murray as the new Assistant Dean.
 -- TODO: Student Answer Here....
+INSERT INTO Staff(FirstName, LastName, DateHired, PositionID)
+VALUES ('Sheldon','Murray', GETDATE(),
+         (SELECT PositionID
+         FROM Position
+         WHERE PositionDescription= 'Assistant Dean'))
 
+SELECT FirstName, LastName, StaffID
+FROM Staff
 -- 3. There are three additional clubs being started at the school:
 --      - START - Small Tech And Research Teams
 --      - CALM - Coping And Lifestyle Management
@@ -64,7 +77,28 @@ VALUES ('START', 'Small Tech And Research Teams'),
 --    people to add as new students. Write separate insert statement for each new student.
 -- TODO: Student Answer Here....
 
+INSERT INTO Student(FirstName, LastName, Gender, City, BirthDate)
+VALUES ('Aiden', 'Pena', 'M', 'Edmonton', 'Nov 3 1982')
+
+INSERT INTO Student(FirstName, LastName, Gender, City, BirthDate)
+VALUES ('Bo', 'Tox', 'M', 'Edmonton', 'Mar 17 1990')
+
+INSERT INTO Student(FirstName, LastName, Gender, City, BirthDate)
+VALUES ('John', 'Connor', 'M', 'Edmonton', 'Aug 7 1983')
+
+SELECT StudentID, FirstName, LastName, Gender, City, Birthdate
+FROM Student
+       
+
 
 -- 5. Enroll each of the students you've added into the DMIT777 course.
 --    Use 'Dan Gilleland' as the instructor. At this point, their marks should be NULL.
 -- TODO: Student Answer Here....
+
+INSERT INTO Registration(StudentID, CourseID, StaffID, Semester)
+VALUES (200978406, 'DMIT777', 15, '2005S'),
+       (200978407, 'DMIT777', 15, '2005S'),
+       (200978408, 'DMIT777', 15, '2005S')
+
+SELECT StudentID, CourseID, StaffID, Semester
+FROM Registration 
