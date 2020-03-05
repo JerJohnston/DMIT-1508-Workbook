@@ -94,7 +94,7 @@ WHERE   Mark IS NOT NULL
 --SELECT CourseName
 --FROM Course
 
-SELECT RIGHT (CourseName, 3) AS 'Courses' 
+SELECT RIGHT(CourseName, 3) AS 'Courses' 
 FROM Course 
 ORDER BY 1
 

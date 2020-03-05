@@ -169,10 +169,72 @@ INSERT INTO Course(CourseId, CourseName, CourseHours, CourseCost, MaxStudents)
 VALUES ('DMIT987', 'Advanced Logic', 90, 420.00, 12)
 
 --6. Create a stored procedure called "Provinces" to list all the students provinces.
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'Provinces')
+    DROP PROCEDURE Provinces
+GO
+
+CREATE PROCEDURE Provinces
+
+AS
+
+	SELECT Province
+	FROM Student
+
+RETURN
+GO
+
+EXEC Provinces
+GO
+
 
 --7. OK, question 6 was ridiculously simple and serves no purpose. Lets remove that stored procedure from the database.
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'Provinces')
+    DROP PROCEDURE Provinces
+GO
+
 --8. Create a stored procedure called StudentPaymentTypes that lists all the student names and their payment types. Ensure all the student names are listed, including those who have not yet made a payment.
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'StudentPaymentTypes')
+    DROP PROCEDURE StudentPaymentTypes
+GO
+
+CREATE PROCEDURE StudentPaymentTypes
+
+AS
+
+	SELECT DISTINCT S.StudentID, FirstName + ' ' + LastName AS 'Student Name', P.PaymentTypeID, PaymentTypeDescription
+	FROM Student S
+		LEFT OUTER JOIN Payment P ON S.StudentID = P.StudentID
+		LEFT OUTER JOIN PaymentType PT ON PT.PaymentTypeID = P.PaymentTypeID
+		
+		
+GO
+
+EXEC StudentPaymentTypes
+GO 
+
 --9. Modify the procedure from question 8 to return only the student names that have made payments.
+
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'StudentPaymentTypes')
+    DROP PROCEDURE StudentPaymentTypes
+GO
+
+CREATE PROCEDURE StudentPaymentTypes
+
+AS
+
+	SELECT DISTINCT S.StudentID, FirstName + ' ' + LastName AS 'Student Name', P.PaymentTypeID, PaymentTypeDescription
+	FROM Student S
+		INNER JOIN Payment P ON S.StudentID = P.StudentID
+		INNER JOIN PaymentType PT ON PT.PaymentTypeID = P.PaymentTypeID
+	
+		
+		
+GO
+
+EXEC StudentPaymentTypes
+GO 
+
+
 
