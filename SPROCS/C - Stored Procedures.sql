@@ -14,6 +14,51 @@ WHERE   Mark BETWEEN 70 AND 80 -- BETWEEN is inclusive
 --      one for the upper value and one for the lower value.
 --      Call the stored procedure ListStudentMarksByRange
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'ListStudentMarksByRange')
+    DROP PROCEDURE ListStudentMarksByRange
+GO
+
+CREATE PROCEDURE ListStudentMarksByRange
+
+    @Lower decimal,
+    @Upper decimal
+
+AS
+
+    SELECT StudentID, CourseId, Mark
+    FROM Registration
+    WHERE Mark BETWEEN 70 AND 80
+
+RETURN
+GO
+
+EXEC ListStudentMarksByRange 70, 80
+GO
+
+ALTER PROCEDURE ListStudentMarksByRange
+
+    @Lower decimal,
+    @Upper decimal
+AS
+    IF @Lower IS NULL OR @Upper IS NULL
+        RAISERROR('Parameters Lower and Upper cannot be NULL!', 16, 1)
+    ELSE IF @Lower > @Upper
+        RAISERROR('Lower Paramater cannot be greater then higher parameter!', 16, 1)
+    ELSE IF @Lower < 0 
+        RAISERROR('Lower Paramater cannot be less then 0!', 16, 1)
+    ELSE IF @Upper > 100
+        RAISERROR('ALL YOUR BASE ARE BELONG TO US!!', 16, 1)
+    ELSE 
+        SELECT StudentID, CourseId, Mark
+        FROM Registration
+        WHERE Mark BETWEEN 70 AND 80
+
+RETURN
+GO
+
+EXEC ListStudentMarksByRange 65, 100
+GO
+
 
 /* ----------------------------------------------------- */
 
@@ -28,6 +73,27 @@ ORDER BY 'Staff Full Name', CourseId
 --      Place this in a stored procedure called CourseInstructors.
 
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'CourseInstructors')
+    DROP PROCEDURE CourseInstructors
+GO
+
+CREATE PROCEDURE CourseInstructors
+
+AS
+    SELECT  DISTINCT 
+        FirstName + ' ' + LastName AS 'Staff Full Name',
+        CourseId
+    FROM    Staff S
+        INNER JOIN Registration R
+            ON S.StaffID = R.StaffID
+    ORDER BY 'Staff Full Name', CourseId
+
+RETURN
+GO
+
+EXEC CourseInstructors
+GO
+
 /* ----------------------------------------------------- */
 
 -- 3.   Selects the students first and last names who have last names starting with S.
@@ -39,6 +105,25 @@ WHERE   LastName LIKE 'S%'
 --      Do NOT assume that the '%' is part of the value in the parameter variable;
 --      Your solution should concatenate the @PartialName with the wildcard.
 
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'FindStudentByLastName')
+    DROP PROCEDURE FindStudentByLastName
+GO
+
+CREATE PROCEDURE FindStudentByLastName
+
+@PartialName char(1)
+
+AS
+
+    SELECT  FirstName, LastName
+    FROM    Student
+    WHERE   LastName = @PartialName AND @PartialName LIKE 'S%'
+
+RETURN
+GO
+
+EXEC FindStudentByLastName S
+GO
 
 /* ----------------------------------------------------- */
 

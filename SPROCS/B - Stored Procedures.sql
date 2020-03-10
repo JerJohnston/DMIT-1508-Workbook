@@ -1,5 +1,16 @@
 -- Stored Procedures (Sprocs)
 -- Validating Parameter Values
+--
+-- We can validate paramater values using IF/ELSE statements. An IF/ELSE statement is 
+-- called a "flow-control" statement because it controls whether or not another statement
+-- (or statement block) will execute. The grammar of the IF/ELSE statement is as follows.
+-- IF (conditional_expression) 
+--    Statement-or-Statement-Block -- TRUE side
+-- ELSE
+--    Statement-or-Statement-Block -- FALSE side
+--
+-- where the conditional_expression is some kind of expression that will result in a
+-- value of TRUE or FALSE. 
 
 USE [A01-School]
 GO
@@ -35,6 +46,14 @@ AS
 RETURN
 GO
 
+-- Demo/Test my stored procedure
+EXEC AddClub 'Club', 'Central Library of Unused Books' -- Testing with "good" data
+GO
+-- Imagine that the SPROC is called with !bad! data
+EXEC AddClub NULL, 'Gotcha'
+GO
+
+
 
 -- 1.b. Modify the AddClub procedure to ensure that the club name and id are actually supplied. Use the RAISERROR() function to report that this data is required.
 ALTER PROCEDURE AddClub
@@ -43,11 +62,15 @@ ALTER PROCEDURE AddClub
     @ClubName   varchar(50)
 AS
     -- Body of procedure here
+    -- I validate by finding out if the data is poor. If so, then I report the problem
     IF @ClubId IS NULL OR @ClubName IS NULL
     BEGIN
         RAISERROR('Club ID and Name are required', 16, 1)
+        -- 16 is the error number (we are basically constrained to a range of error numbers)
+        -- 1 represents the severity of the error
+        -- we can always use the 16, 1  
     END
-    ELSE
+    ELSE -- Otherwise, I proceed to the process the data
     BEGIN
         INSERT INTO Club(ClubId, ClubName)
         VALUES (@ClubId, @ClubName)
@@ -156,6 +179,8 @@ AS
         RAISERROR('All parameters are required.', 16, 1)
     ELSE IF NOT EXISTS (SELECT StudentID FROM Student WHERE StudentID = @StudentId)
         RAISERROR('That student id does not exist', 16, 1)
+        -- The EXISTS function will return true if there are one or more rows,
+        -- otherwise it will return false.
     ELSE
         UPDATE  Student
         SET     FirstName = @FirstName,
