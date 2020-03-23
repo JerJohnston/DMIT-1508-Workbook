@@ -1,6 +1,17 @@
 --  Stored Procedures (Sprocs)
 -- Demonstrate using Transactions in a Stored Procedure
 
+-- What is a transaction?
+-- A transaction occurs when we are making two or more insert/update/deletes and they must succeed or fail as a group. 
+
+--How do we start a transaction?
+--	BEGIN TRANSACTION
+
+--To make a transaction succeed use the COMMIT TRANSACTION statement.
+--To make a transaction fail us the ROLLBACK TRANSACTION statement.
+
+
+
 USE [A01-School]
 GO
 
@@ -18,6 +29,10 @@ GO
 
 
 -- 1. Add a stored procedure called TransferCourse that accepts a student ID, semester, and two course IDs: the one to move the student out of and the one to move the student in to.
+
+--	- Withdraw the student from one course.  UPDATE
+--  - Add the student to another course.    INSERT
+
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.ROUTINES WHERE ROUTINE_TYPE = N'PROCEDURE' AND ROUTINE_NAME = 'TransferCourse')
     DROP PROCEDURE TransferCourse
 GO
